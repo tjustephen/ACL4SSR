@@ -24,7 +24,7 @@ allow-lan: false
 # bind-address: "*"
 
 # 规则模式：rule（规则） / global（全局代理）/ direct（全局直连）/ script (脚本)
-# mode: rule
+mode: rule
 
 # 设置日志输出级别 (默认级别：silent，即不输出任何内容，以避免因日志内容过大而导致程序内存溢出）。
 # 5 个级别：silent / error / warning / info / debug。级别越高日志输出量越大，越倾向于调试，若需要请自行开启。
@@ -83,14 +83,23 @@ dns:
   fallback:
      #- 8.8.8.8 # Google DNS
      #- 1.1.1.1 # Cloudflare DNS
-      - https://dns.alidns.com/dns-query # 阿里 DoH DNS
-      - https://dns.rubyfish.cn/dns-query # 红鱼 DoH DNS
+      - https://1.0.0.1/dns-query
       - https://cloudflare-dns.com/dns-query # Cloudflare DoH DNS
       - https://dns.google/dns-query # Google DoH DNS
   fallback-filter:
       geoip: true # 默认
       ipcidr: # 在这个网段内的 IP 地址会被考虑为被污染的 IP
         - 240.0.0.0/4
+      domain:
+        - +.google.com
+        - +.facebook.com
+        - +.twitter.com
+        - +.youtube.com
+        - +.xn--ngstr-lra8j.com
+        - +.google.cn
+        - +.googleapis.cn
+        - +.googleapis.com
+        - +.gvt1.com
 
 # 1. clash DNS 请求逻辑：
 #   (1) 当访问一个域名时， nameserver 与 fallback 列表内的所有服务器并发请求，得到域名对应的 IP 地址。
@@ -182,10 +191,10 @@ cfw-conn-break-strategy:
 # Sort proxies in Proxies module by default/latency/alphabet
 cfw-proxies-order: default
 
-cfw-conn-break-strategy:
-  proxy: none # none/chain/all
-  profile: true # true/false
-  mode: false # true/false
+#cfw-conn-break-strategy:
+#  proxy: none # none/chain/all
+#  profile: true # true/false
+#  mode: false # true/false
 
 # 子进程 启动其他应用
 # Run child process after CFW started
